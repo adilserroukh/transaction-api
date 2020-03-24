@@ -1,0 +1,18 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  profiles:
+    active: default
+  datasource:
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true

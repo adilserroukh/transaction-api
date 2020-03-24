@@ -1,0 +1,114 @@
+openapi: "3.0.0"
+info:
+  description: "Codegen for demo service"
+  version: "0.0.1"
+  title: "Demo Service Specification"
+  contact:
+    email: "aserroukh@atsistemas"
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: "transaction"
+    description: "User tag for demo purposes"
+servers:
+  - url: http://localhost:8000/
+    description: "local host"
+paths:
+  #### Transaction ####
+  /transaction/{account_iban}:
+    get:
+      tags:
+        - "transaction"
+      summary: "Retrieves User by ID"
+      operationId: "getTransactionsByIban"
+      parameters:
+        - name: "account_iban"
+          in: "path"
+          description: "retrieves user by user id"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "Retrieves family members by person id"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  #### Transaction ####
+  /status/{account_iban}:
+    get:
+      tags:
+        - "transaction"
+      summary: "Retrieves User by ID"
+      operationId: "getTransactionsByIban"
+      parameters:
+        - name: "account_iban"
+          in: "path"
+          description: "retrieves user by user id"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "Retrieves family members by person id"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+
+
+components:
+  schemas:
+    Transaction:
+      type: "object"
+      required:
+        - "reference"
+        - "account_iban"
+        - "date"
+        - "amount"
+        - "fee"
+        - "description"
+      properties:
+        reference:
+          type: "string"
+          example: "12345A"
+        account_iban:
+          type: "string"
+          example: "ES9820385778983000760236"
+        date:
+          type: "string"
+          example: "ES9820385778983000760236"
+        amount:
+          type: "string"
+          example: "ES9820385778983000760236"
+        fee:
+          type: "string"
+          example: "ES9820385778983000760236"
+        description:
+          type: "string"
+          example: "Restaurant payment"
+
+    Status:
+      type: "object"
+      required:
+        - "reference"
+        - "status"
+        - "amount"
+        - "fee"
+
+      properties:
+        reference:
+          type: "string"
+          example: "12345A"
+        status:
+          type: "string"
+          enum: [PENDING, SETTLED, FUTURE, INVALID]
+          example: "PENDING"
+        amount:
+          type: "string"
+          example: "12345A"
+        fee:
+          type: "string"
+          example: "12345A"
