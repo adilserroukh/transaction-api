@@ -16,14 +16,36 @@ servers:
     description: "local host"
 paths:
   #### Transaction ####
-  /transaction/{account_iban}:
+  /transaction:
+    post:
+      tags:
+        - "transaction"
+      summary: create new Transaction
+      operationId: createTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        200:
+          description: succes
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Status"
+
+
+  /transaction/{iban}:
     get:
       tags:
         - "transaction"
       summary: "Retrieves User by ID"
-      operationId: "getTransactionsByIban"
+      operationId: "findTransactionByIban"
       parameters:
-        - name: "account_iban"
+        - name: "iban"
           in: "path"
           description: "retrieves user by user id"
           required: true
@@ -37,14 +59,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Transaction'
   #### Transaction ####
-  /status/{account_iban}:
+  /status/{iban}:
     get:
       tags:
         - "transaction"
       summary: "Retrieves User by ID"
       operationId: "getTransactionsByIban"
       parameters:
-        - name: "account_iban"
+        - name: "iban"
           in: "path"
           description: "retrieves user by user id"
           required: true
@@ -65,7 +87,7 @@ components:
       type: "object"
       required:
         - "reference"
-        - "account_iban"
+        - "iban"
         - "date"
         - "amount"
         - "fee"
@@ -74,18 +96,18 @@ components:
         reference:
           type: "string"
           example: "12345A"
-        account_iban:
+        iban:
           type: "string"
           example: "ES9820385778983000760236"
         date:
           type: "string"
           example: "ES9820385778983000760236"
         amount:
-          type: "string"
-          example: "ES9820385778983000760236"
+          type: "number"
+          example: "193.38"
         fee:
-          type: "string"
-          example: "ES9820385778983000760236"
+          type: "integer"
+          example: "3.18"
         description:
           type: "string"
           example: "Restaurant payment"
@@ -112,3 +134,6 @@ components:
         fee:
           type: "string"
           example: "12345A"
+
+
+

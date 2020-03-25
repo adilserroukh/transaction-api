@@ -1,7 +1,7 @@
 package com.atsistemas.poc.persistence.service;
 
 
-import com.atsistemas.poc.persistence.model.Transaction;
+import com.atsistemas.poc.persistence.model.TransactionData;
 import com.atsistemas.poc.persistence.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +20,19 @@ public class TransactionService {
     }
 
     @Transactional
-    public Optional<Transaction> findByIban(String iban) {
+    public Optional<TransactionData> findByIban(String iban) {
         return repository.findByIban(iban);
     }
 
     @Transactional
-    public Stream<Transaction> findAll() {
+    public Stream<TransactionData> findAll() {
+
         return repository.findAll();
+    }
+
+    @Transactional
+    public TransactionData create(TransactionData transaction) {
+        return repository.save(transaction);
     }
 
 }

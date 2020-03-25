@@ -1,7 +1,5 @@
 Feature: Business Rules
 
-
-
   Scenario: A
     Given A transaction that is not stored in our system
     When I check the status from any channel
