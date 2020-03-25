@@ -1,25 +1,16 @@
-openapi: "3.0.0"
+openapi: 3.0.0
 info:
-  description: "Codegen for demo service"
-  version: "0.0.1"
-  title: "Demo Service Specification"
+  title: Sample API
+  version: '1.0.0'
   contact:
-    email: "aserroukh@atsistemas"
-  license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-tags:
-  - name: "transaction"
-    description: "User tag for demo purposes"
+    email: aserroukh@atsistemas
 servers:
-  - url: http://localhost:8000/
+  - url: "http://localhost:8000/api"
     description: "local host"
 paths:
-  #### Transaction ####
-  /transaction:
+
+  /transaction/receive:
     post:
-      tags:
-        - "transaction"
       summary: create new Transaction
       operationId: createTransaction
       requestBody:
@@ -35,50 +26,58 @@ paths:
             application/json:
               schema:
                 type: object
-                $ref: "#/components/schemas/Status"
+                $ref: "#/components/schemas/StatusTransactionResponse"
+        401:
+          description: invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/StatusTransactionResponse"
 
-
-  /transaction/{iban}:
+  /transaction/{account_iban}:
     get:
-      tags:
-        - "transaction"
-      summary: "Retrieves User by ID"
-      operationId: "findTransactionByIban"
+      summary: "Search transactions by IBAN number of the account"
+      operationId: "seachTransactions"
       parameters:
-        - name: "iban"
+        - name: "account_iban"
           in: "path"
-          description: "retrieves user by user id"
+          description: "IBAN number of the account"
           required: true
           schema:
             type: "string"
+        - name: sort
+          in: query
+          description: Sort by amount
+          schema:
+            type: string
+            enum: [asc, desc]
       responses:
         200:
-          description: "Retrieves family members by person id"
+          description: "OK"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Transaction'
-  #### Transaction ####
-  /status/{iban}:
+
+  /transaction/status:
     get:
-      tags:
-        - "transaction"
-      summary: "Retrieves User by ID"
-      operationId: "getTransactionsByIban"
-      parameters:
-        - name: "iban"
-          in: "path"
-          description: "retrieves user by user id"
-          required: true
-          schema:
-            type: "string"
+      summary: "Status and additional information for a specific transaction"
+      operationId: "statusTransation"
+      requestBody:
+        description: "information for a specific transaction"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransationInfoRequest'
       responses:
         200:
           description: "Retrieves family members by person id"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Status'
+                $ref: '#/components/schemas/StatusTransactionResponse'
 
 
 components:
@@ -112,14 +111,24 @@ components:
           type: "string"
           example: "Restaurant payment"
 
-    Status:
+    TransationInfoRequest:
+      type: object
+      properties:
+        reference:
+          type: string
+          example: '12345A'
+        channel:
+          type: string
+          enum: [CLIENT, ATM, INTERNAL]
+          example: 'CLIENT'
+
+
+    StatusTransactionResponse:
       type: "object"
       required:
         - "reference"
         - "status"
         - "amount"
-        - "fee"
-
       properties:
         reference:
           type: "string"

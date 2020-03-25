@@ -1,7 +1,9 @@
 package com.atsistemas.poc.persistence.model;
 
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +11,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ACCOUNT")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class AccountData extends AbstractDomain{
 
     @Column(name = "IBAN", nullable = false)

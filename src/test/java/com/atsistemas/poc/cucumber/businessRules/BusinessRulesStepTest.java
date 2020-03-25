@@ -39,7 +39,7 @@ public class BusinessRulesStepTest implements En {
     public BusinessRulesStepTest() {
         Given("A transaction that is not stored in our system", () -> {
 
-            this.deleteAll("TRANSATION");
+            this.deleteAll("TRANSACTION");
             mvc.perform(get("/transaction/1")).andReturn();
 
            // api.get("/transaction/1")

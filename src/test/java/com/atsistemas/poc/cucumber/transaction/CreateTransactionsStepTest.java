@@ -55,7 +55,7 @@ public class CreateTransactionsStepTest implements En {
 
     private static final int TEST_PORT = 8080;
     private static final String APPLICATION_JSON_CONTENT_TYPE = "application/json";
-    private static final String APPLICATIONS_WS_ROOT = "/transaction";
+    private static final String APPLICATIONS_WS_ROOT = "/transaction/receive";
 
 
     public CreateTransactionsStepTest() {

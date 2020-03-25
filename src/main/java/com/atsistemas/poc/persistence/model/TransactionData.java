@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "TRANSATION")
+@Table(name = "TRANSACTION")
 @Getter
 @Setter
 @NoArgsConstructor
