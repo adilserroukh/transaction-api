@@ -12,6 +12,5 @@ public interface  TransactionMapper {
 
     TransactionData fromTransaction(Transaction from);
 
-    Transaction fromTransactionData(TransactionData from);
 
 }

@@ -2,7 +2,6 @@ package com.atsistemas.poc.business.mapper;
 
 import com.atsistemas.poc.business.model.Account;
 import com.atsistemas.poc.persistence.model.AccountData;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -13,5 +12,4 @@ public interface AccountMapper {
 
     AccountData fromAccount(Account from);
 
-    Account fromAccountData(AccountData accountData);
 }

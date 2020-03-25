@@ -1,3 +1,5 @@
 # Changelog
-Tous les changements notables de ce projet sont documentés dans ce fichier.
+All notable changes from this project are documented in this file.
 
+## V.0.0.1 
+- Init Projet Structure 
