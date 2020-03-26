@@ -6,7 +6,7 @@ import com.atsistemas.poc.persistence.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -20,8 +20,8 @@ public class TransactionService {
     }
 
     @Transactional
-    public Optional<TransactionData> findByIban(String iban) {
-        return repository.findByAccountIban(iban);
+    public List<TransactionData> findByIban(String iban) {
+        return repository.findAllByAccountIban(iban);
     }
 
     @Transactional

@@ -10,5 +10,5 @@ import org.junit.runners.Suite;
         CreateTransactionsRunnerTests.class,
         BusinessRulesRunnerTests.class
 })
-public class BackendTestSuite {
+public class BackendSuiteTest {
 }

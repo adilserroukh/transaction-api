@@ -1,17 +1,17 @@
-package com.atsistemas.poc.business.model;
+package com.atsistemas.poc.business.model.transaction;
 
+import com.atsistemas.poc.commons.util.IDGenerator;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class Transaction {
-
+    private String referenceNumber;
     private String iban;
     private LocalDateTime transactionDate;
     private BigDecimal amount;
@@ -21,6 +21,9 @@ public class Transaction {
     public enum TypeTransaction {
         CREDIT,
         DEBIT
+    }
+    private Transaction(){
+
     }
 
     public TypeTransaction typeTransaction() {
@@ -36,6 +39,15 @@ public class Transaction {
 
         private Builder() {
 
+        }
+
+        public Builder referenceNumber(String referenceNumber) {
+            if(!StringUtils.isBlank(referenceNumber)){
+                transaction.referenceNumber = referenceNumber;
+            }else{
+                transaction.referenceNumber = IDGenerator.generateEntityId();
+            }
+            return this;
         }
 
         public Builder iban(String iban) {

@@ -18,6 +18,7 @@ public class AccountData extends AbstractDomain{
 
     @Column(name = "IBAN_NUMER", nullable = false)
     private String iban;
+
     @Column(name = "AMOUNT", nullable = false)
     private BigDecimal amount;
 

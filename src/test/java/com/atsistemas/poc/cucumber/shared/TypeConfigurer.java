@@ -1,7 +1,7 @@
 package com.atsistemas.poc.cucumber.shared;
 
-import com.atsistemas.poc.business.model.Account;
-import com.atsistemas.poc.business.model.Transaction;
+import com.atsistemas.poc.business.model.account.Account;
+import com.atsistemas.poc.business.model.transaction.Transaction;
 import com.atsistemas.poc.persistence.model.TransactionData;
 import io.cucumber.core.api.TypeRegistry;
 import io.cucumber.core.api.TypeRegistryConfigurer;

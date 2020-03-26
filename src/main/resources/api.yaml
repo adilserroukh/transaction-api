@@ -51,14 +51,16 @@ paths:
           description: Sort by amount
           schema:
             type: string
-            enum: [asc, desc]
+            enum: [ASC, DESC]
       responses:
         200:
           description: "OK"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Transaction'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
 
   /transaction/status:
     get:
@@ -94,21 +96,27 @@ components:
       properties:
         reference:
           type: "string"
+          nullable: true
           example: "12345A"
         iban:
           type: "string"
           example: "ES9820385778983000760236"
         date:
           type: "string"
-          example: "ES9820385778983000760236"
+          format: date-time
+          nullable: true
+          example: "2019-07-16T16:55:42.000Z"
+
         amount:
           type: "number"
           example: "193.38"
         fee:
-          type: "integer"
+          type: "number"
+          nullable: true
           example: "3.18"
         description:
           type: "string"
+          nullable: true
           example: "Restaurant payment"
 
     TransationInfoRequest:
@@ -138,11 +146,11 @@ components:
           enum: [PENDING, SETTLED, FUTURE, INVALID]
           example: "PENDING"
         amount:
-          type: "string"
-          example: "12345A"
+          type: "number"
+          example: "193.38"
         fee:
-          type: "string"
-          example: "12345A"
+          type: "number"
+          example: "3.18"
 
 
 

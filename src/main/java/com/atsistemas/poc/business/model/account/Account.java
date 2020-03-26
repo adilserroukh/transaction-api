@@ -1,4 +1,4 @@
-package com.atsistemas.poc.business.model;
+package com.atsistemas.poc.business.model.account;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

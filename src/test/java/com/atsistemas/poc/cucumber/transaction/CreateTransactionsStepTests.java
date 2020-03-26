@@ -1,8 +1,8 @@
 package com.atsistemas.poc.cucumber.transaction;
 
 
-import com.atsistemas.poc.business.model.Account;
-import com.atsistemas.poc.business.model.Transaction;
+import com.atsistemas.poc.business.model.account.Account;
+import com.atsistemas.poc.business.model.transaction.Transaction;
 import com.atsistemas.poc.cucumber.Step;
 import com.atsistemas.poc.persistence.model.AccountData;
 import com.atsistemas.poc.persistence.service.AccountService;
@@ -37,7 +37,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Step
-public class CreateTransactionsStepTest implements En {
+public class CreateTransactionsStepTests implements En {
 
     @Autowired
     private DataSource dataSource;
@@ -59,7 +59,7 @@ public class CreateTransactionsStepTest implements En {
     private static final String APPLICATIONS_WS_ROOT = "/transaction/receive";
 
 
-    public CreateTransactionsStepTest() {
+    public CreateTransactionsStepTests() {
         Given("delete Account {string}", (String string) -> {
             deleteAll("account");
         });
@@ -70,7 +70,7 @@ public class CreateTransactionsStepTest implements En {
             accounts.stream()
                     //.map(account -> AccountMapper.INSTANCE.fromAccount(account))
                     .forEach(account -> {
-                        AccountData accountData= new AccountData();
+                        AccountData accountData = new AccountData();
                         accountData.setIban(account.getIban());
                         accountData.setAmount(BigDecimal.valueOf(account.getAmount()));
                         accountService.create(accountData);
@@ -91,7 +91,7 @@ public class CreateTransactionsStepTest implements En {
                     .forEach(tra -> {
                         response = api
                                 .contentType(APPLICATION_JSON_CONTENT_TYPE)
-                                .body("{\"date\":\"\",\"fee\":0,\"iban\":\"ES9820385778983000760236\",\"reference\":\"\",\"amount\":50,\"description\":\"\"}")
+                                .body("{\"date\":\"2019-07-16T16:55:42.000Z\",\"fee\":0,\"iban\":\"ES9820385778983000760236\",\"reference\":\"\",\"amount\":"+tra.getAmount()+",\"description\":\"\"}")
                                 .when()
                                 .post(APPLICATIONS_WS_ROOT)
                                 .then();

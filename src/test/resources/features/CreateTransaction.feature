@@ -11,12 +11,21 @@ Feature: Create transaction
       | iban                     | amount |
       | ES9820385778983000760236 | 50     |
     Then account user
-      | IBAN_NUMER                     | AMOUNT |
+      | IBAN_NUMER               | AMOUNT |
       | ES9820385778983000760236 | 150.00 |
 
 
 
-
+  Scenario: Create Transaction And verify in Data Base
+    Given create account user
+      | iban                     | amount |
+      | ES9820385778983000760236 | 200    |
+    When receive the transaction
+      | iban                     | amount |
+      | ES9820385778983000760236 | -80     |
+    Then account user
+      | IBAN_NUMER               | AMOUNT |
+      | ES9820385778983000760236 | 280.00 |
 
 
 
