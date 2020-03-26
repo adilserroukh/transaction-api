@@ -11,8 +11,8 @@ Feature: Create transaction
       | iban                     | amount |
       | ES9820385778983000760236 | 50     |
     Then account user
-      | iban                     | AMOUNT |
-      | ES9820385778983000760236 | 150    |
+      | IBAN_NUMER                     | AMOUNT |
+      | ES9820385778983000760236 | 150.00 |
 
 
 

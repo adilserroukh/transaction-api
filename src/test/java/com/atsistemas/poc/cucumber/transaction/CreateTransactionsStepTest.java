@@ -1,10 +1,10 @@
 package com.atsistemas.poc.cucumber.transaction;
 
 
-import com.atsistemas.poc.business.mapper.AccountMapper;
 import com.atsistemas.poc.business.model.Account;
 import com.atsistemas.poc.business.model.Transaction;
 import com.atsistemas.poc.cucumber.Step;
+import com.atsistemas.poc.persistence.model.AccountData;
 import com.atsistemas.poc.persistence.service.AccountService;
 import com.atsistemas.poc.persistence.service.TransactionService;
 import com.google.gson.Gson;
@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,8 +68,13 @@ public class CreateTransactionsStepTest implements En {
 
             List<Account> accounts = dataTable.asList(Account.class);
             accounts.stream()
-                    .map(account -> AccountMapper.INSTANCE.fromAccount(account))
-                    .forEach(accountData -> accountService.create(accountData));
+                    //.map(account -> AccountMapper.INSTANCE.fromAccount(account))
+                    .forEach(account -> {
+                        AccountData accountData= new AccountData();
+                        accountData.setIban(account.getIban());
+                        accountData.setAmount(BigDecimal.valueOf(account.getAmount()));
+                        accountService.create(accountData);
+                    });
         });
 
         When("receive the transaction", (DataTable dataTable) -> {

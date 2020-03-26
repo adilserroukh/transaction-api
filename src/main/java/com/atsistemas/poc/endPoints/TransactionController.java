@@ -31,7 +31,7 @@ public class TransactionController implements TransactionApi {
         try {
             Transaction.Builder builderTra = Transaction.builder();
             builderTra.iban(transactionDto.getIban())
-                    .amount(transactionDto.getAmount().longValue());
+                    .amount(transactionDto.getAmount());
 
             transactionManager.createTransaction(builderTra.create());
             StatusTransactionResponseDto status = new StatusTransactionResponseDto();

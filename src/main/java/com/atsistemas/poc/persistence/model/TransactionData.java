@@ -2,31 +2,36 @@ package com.atsistemas.poc.persistence.model;
 
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.Date;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TRANSACTION")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class TransactionData extends AbstractDomain {
 
-    @Column(name = "IBAN", nullable = false)
-    private String iban;
-    @Column(name = "DATE_TRANS")
-    private Date transactionDate;
+    @Column(name = "REF_NUM")
+    private String referenceNumber;
+
+    @Column(name = "IBAN_NUMER", length = 24, nullable = false)
+    private String accountIban;
+
+    @Column(name = "DAT_TOOK")
+    private LocalDateTime dateTook;
+
     @Column(name = "AMOUNT", nullable = false)
-    private Long amount;
+    private BigDecimal amount;
+
     @Column(name = "FEE")
-    private Integer fee;
+    private BigDecimal fee;
+
     @Column(name = "DESCRIPTION")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AccountData account;
+
 
 }

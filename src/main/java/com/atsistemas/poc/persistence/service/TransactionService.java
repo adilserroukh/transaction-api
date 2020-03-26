@@ -21,7 +21,7 @@ public class TransactionService {
 
     @Transactional
     public Optional<TransactionData> findByIban(String iban) {
-        return repository.findByIban(iban);
+        return repository.findByAccountIban(iban);
     }
 
     @Transactional

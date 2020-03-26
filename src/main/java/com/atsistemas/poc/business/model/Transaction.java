@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,11 +13,19 @@ import java.util.Date;
 public class Transaction {
 
     private String iban;
-    private Date transactionDate;
-    private Long amount;
-    private Integer fee;
+    private LocalDateTime transactionDate;
+    private BigDecimal amount;
+    private BigDecimal fee;
     private String description;
 
+    public enum TypeTransaction {
+        CREDIT,
+        DEBIT
+    }
+
+    public TypeTransaction typeTransaction() {
+        return amount.compareTo(BigDecimal.ZERO) < 0 ? TypeTransaction.DEBIT : TypeTransaction.CREDIT;
+    }
 
     public static Builder builder() {
         return new Builder();
@@ -34,17 +43,17 @@ public class Transaction {
             return this;
         }
 
-        public Builder transactionDate(Date transactionDate) {
+        public Builder transactionDate(LocalDateTime transactionDate) {
             transaction.transactionDate = transactionDate;
             return this;
         }
 
-        public Builder amount(Long amount) {
+        public Builder amount(BigDecimal amount) {
             transaction.amount = amount;
             return this;
         }
 
-        public Builder fee(Integer fee) {
+        public Builder fee(BigDecimal fee) {
             transaction.fee = fee;
             return this;
         }

@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends CustomRepository<TransactionData> {
 
-    Optional<TransactionData> findByIban(String iban);
+    Optional<TransactionData> findByAccountIban(String iban);
 
 }
