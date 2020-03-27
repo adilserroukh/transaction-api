@@ -1,11 +1,7 @@
-package com.atsistemas.poc.commons.util;
+package com.atsistemas.poc.util;
 
 
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

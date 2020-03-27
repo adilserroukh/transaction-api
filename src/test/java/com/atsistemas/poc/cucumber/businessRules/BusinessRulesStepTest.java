@@ -17,7 +17,6 @@ import io.cucumber.java8.En;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -29,8 +28,6 @@ import java.util.List;
 
 import static com.ninja_squad.dbsetup.Operations.deleteAllFrom;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalToObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Step

@@ -1,14 +1,14 @@
 package com.atsistemas.poc.business.model.account;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
+@Getter
 public class Account {
     private String iban;
     private Long amount;
 
+    private Account() {
+    }
 
     public static Builder builder() {
         return new Builder();

@@ -11,19 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
-/**
- * Domain parent de tous les domain.
- */
 @MappedSuperclass
 public abstract class AbstractDomain implements Serializable {
 
-    /**
-     * Identifiant BD unique
-     */
     @Id
     @GeneratedValue(
-            strategy= GenerationType.AUTO,
-            generator="native"
+            strategy = GenerationType.AUTO,
+            generator = "native"
     )
     @GenericGenerator(
             name = "native",

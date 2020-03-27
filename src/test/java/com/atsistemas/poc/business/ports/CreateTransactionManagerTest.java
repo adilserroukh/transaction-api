@@ -1,6 +1,6 @@
 package com.atsistemas.poc.business.ports;
 
-import com.atsistemas.poc.business.mapper.TransactionMapper;
+import com.atsistemas.poc.business.model.transaction.ChannelType;
 import com.atsistemas.poc.business.model.transaction.Transaction;
 import com.atsistemas.poc.business.model.transaction.TransactionInfo;
 import com.atsistemas.poc.business.model.transaction.TransactionRequest;
@@ -13,11 +13,10 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TransactionManagerTest {
+class CreateTransactionManagerTest {
 
 
     private TransactionData transactionDataTest = null;
-    private Transaction transactionTest = null;
     private DecimalFormat formatAmoutExpected = null;
 
 
@@ -32,29 +31,18 @@ class TransactionManagerTest {
         this.transactionDataTest.setFee(BigDecimal.valueOf(3.18));
         this.transactionDataTest.setDescription("Restaurant payment");
 
-        transactionTest = TransactionMapper.fromData(transactionDataTest);
-
     }
-
-    @Test
-    void createTransaction() {
-    }
-
-    @Test
-    void findTransactionByIban() {
-    }
-
 
     @Test
     void statusTransaction_transaction_not_stored() {
 
-        TransactionManager transactionManager = new TransactionManager(null, null);
+        CheckTransactionManager checkTransactionManager = new CheckTransactionManager(null);
         TransactionRequest request = TransactionRequest
                 .builder()
                 .referenceNumber("XXXXXX")
                 .create();
 
-        TransactionInfo status = transactionManager.statusTransaction(request, null);
+        TransactionInfo status = checkTransactionManager.check(request, null);
 
         assertNotNull(status);
         assertEquals("XXXXXX", status.getReferenceNumber());
@@ -70,17 +58,17 @@ class TransactionManagerTest {
 
         transactionDataTest.setDateTook(LocalDateTime.now().minusDays(32));
 
-        TransactionManager transactionManager = new TransactionManager(null, null);
+        CheckTransactionManager checkTransactionManager = new CheckTransactionManager(null);
 
 
         //status from CLIENT
         TransactionRequest request = TransactionRequest
                 .builder()
                 .referenceNumber("12345A")
-                .channel(TransactionRequest.TypeChannel.CLIENT)
+                .channel(ChannelType.CLIENT)
                 .create();
 
-        TransactionInfo status = transactionManager.statusTransaction(request, transactionDataTest);
+        TransactionInfo status = checkTransactionManager.check(request, transactionDataTest);
 
         assertNotNull(status);
         assertEquals("12345A", status.getReferenceNumber());
@@ -94,10 +82,10 @@ class TransactionManagerTest {
         request = TransactionRequest
                 .builder()
                 .referenceNumber("12345A")
-                .channel(TransactionRequest.TypeChannel.ATM)
+                .channel(ChannelType.ATM)
                 .create();
 
-        status = transactionManager.statusTransaction(request, transactionDataTest);
+        status = checkTransactionManager.check(request, transactionDataTest);
 
         assertNotNull(status);
         assertEquals("12345A", status.getReferenceNumber());
@@ -111,10 +99,10 @@ class TransactionManagerTest {
         request = TransactionRequest
                 .builder()
                 .referenceNumber("12345A")
-                .channel(TransactionRequest.TypeChannel.INTERNAL)
+                .channel(ChannelType.INTERNAL)
                 .create();
 
-        status = transactionManager.statusTransaction(request, transactionDataTest);
+        status = checkTransactionManager.check(request, transactionDataTest);
 
         assertNotNull(status);
         assertEquals("12345A", status.getReferenceNumber());
@@ -129,7 +117,7 @@ class TransactionManagerTest {
         this.initTransactionSetUp();
         transactionDataTest.setDateTook(LocalDateTime.now());
 
-        TransactionManager transactionManager = new TransactionManager(null, null);
+        CheckTransactionManager checkTransactionManager = new CheckTransactionManager(null);
 
         //transaction date is equals today
         Transaction transaction = Transaction
@@ -145,10 +133,10 @@ class TransactionManagerTest {
         TransactionRequest request = TransactionRequest
                 .builder()
                 .referenceNumber("12345A")
-                .channel(TransactionRequest.TypeChannel.CLIENT)
+                .channel(ChannelType.CLIENT)
                 .create();
 
-        TransactionInfo status = transactionManager.statusTransaction(request, transactionDataTest);
+        TransactionInfo status = checkTransactionManager.check(request, transactionDataTest);
 
         assertNotNull(status);
         assertEquals("12345A", status.getReferenceNumber());
@@ -164,10 +152,10 @@ class TransactionManagerTest {
         request = TransactionRequest
                 .builder()
                 .referenceNumber("12345A")
-                .channel(TransactionRequest.TypeChannel.ATM)
+                .channel(ChannelType.ATM)
                 .create();
 
-        status = transactionManager.statusTransaction(request, transactionDataTest);
+        status = checkTransactionManager.check(request, transactionDataTest);
 
         assertNotNull(status);
         assertEquals("12345A", status.getReferenceNumber());
@@ -182,10 +170,10 @@ class TransactionManagerTest {
         request = TransactionRequest
                 .builder()
                 .referenceNumber("12345A")
-                .channel(TransactionRequest.TypeChannel.INTERNAL)
+                .channel(ChannelType.INTERNAL)
                 .create();
 
-        status = transactionManager.statusTransaction(request, transactionDataTest);
+        status = checkTransactionManager.check(request, transactionDataTest);
 
         assertNotNull(status);
         assertEquals("12345A", status.getReferenceNumber());
@@ -202,17 +190,17 @@ class TransactionManagerTest {
 
         transactionDataTest.setDateTook(LocalDateTime.now().plusDays(32));
 
-        TransactionManager transactionManager = new TransactionManager(null, null);
+        CheckTransactionManager checkTransactionManager = new CheckTransactionManager(null);
 
 
         //status from INTERNAL
         TransactionRequest request = TransactionRequest
                 .builder()
                 .referenceNumber("12345A")
-                .channel(TransactionRequest.TypeChannel.INTERNAL)
+                .channel(ChannelType.INTERNAL)
                 .create();
 
-        TransactionInfo status = transactionManager.statusTransaction(request, transactionDataTest);
+        TransactionInfo status = checkTransactionManager.check(request, transactionDataTest);
 
         assertNotNull(status);
         assertEquals("12345A", status.getReferenceNumber());

@@ -1,9 +1,13 @@
-package com.atsistemas.poc.endPoints.mapper;
+package com.atsistemas.poc.controller.mapper;
 
 import com.atsistemas.generated.model.TransactionDto;
 import com.atsistemas.poc.business.model.transaction.Transaction;
 
 public class TransactionDtoMapper {
+    private TransactionDtoMapper() {
+
+    }
+
     public static TransactionDto toDto(Transaction from) {
 
         TransactionDto to = new TransactionDto();
@@ -20,7 +24,7 @@ public class TransactionDtoMapper {
 
 
     public static Transaction fromDto(TransactionDto from) {
-        Transaction to = Transaction.builder()
+        return Transaction.builder()
                 .referenceNumber(from.getReference())
                 .iban(from.getIban())
                 .transactionDate(from.getDate())
@@ -28,8 +32,6 @@ public class TransactionDtoMapper {
                 .fee(from.getFee())
                 .description(from.getDescription())
                 .create();
-
-        return to;
     }
 
 

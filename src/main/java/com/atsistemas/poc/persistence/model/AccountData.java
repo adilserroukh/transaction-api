@@ -1,9 +1,7 @@
 package com.atsistemas.poc.persistence.model;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -11,9 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "ACCOUNT")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class AccountData extends AbstractDomain{
 
     @Column(name = "IBAN_NUMER", nullable = false)

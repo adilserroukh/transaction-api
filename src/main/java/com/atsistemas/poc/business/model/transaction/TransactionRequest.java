@@ -1,19 +1,13 @@
 package com.atsistemas.poc.business.model.transaction;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class TransactionRequest {
     private String referenceNumber;
-    private TypeChannel typeChannel;
+    private ChannelType channelType;
 
-    public enum TypeChannel {
-        CLIENT,
-        ATM,
-        INTERNAL
-    }
+
 
 
     private TransactionRequest() {
@@ -35,8 +29,8 @@ public class TransactionRequest {
             return this;
         }
 
-        public TransactionRequest.Builder channel(TypeChannel typeChannel) {
-            transaction.typeChannel = typeChannel;
+        public TransactionRequest.Builder channel(ChannelType channelType) {
+            transaction.channelType = channelType;
             return this;
         }
 

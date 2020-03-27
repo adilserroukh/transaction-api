@@ -1,12 +1,10 @@
 package com.atsistemas.poc.business.model.transaction;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Getter
-@Setter
 public class TransactionInfo {
     private String referenceNumber;
     private StatusTransaction status;
@@ -58,7 +56,6 @@ public class TransactionInfo {
             transaction.referenceNumber = referenceNumber;
             return this;
         }
-
 
 
         public TransactionInfo.Builder amount(BigDecimal amount) {

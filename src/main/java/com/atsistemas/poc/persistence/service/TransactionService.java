@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -28,12 +27,6 @@ public class TransactionService {
     @Transactional
     public Optional<TransactionData> findByReference(String reference) {
         return repository.findByReferenceNumber(reference);
-    }
-
-
-    @Transactional
-    public Stream<TransactionData> findAll() {
-        return repository.findAll();
     }
 
     @Transactional

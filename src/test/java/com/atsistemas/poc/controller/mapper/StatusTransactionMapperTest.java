@@ -1,4 +1,4 @@
-package com.atsistemas.poc.endPoints.mapper;
+package com.atsistemas.poc.controller.mapper;
 
 import com.atsistemas.generated.model.StatusTransactionResponseDto;
 import com.atsistemas.poc.business.model.transaction.TransactionInfo;
@@ -12,21 +12,21 @@ class StatusTransactionMapperTest {
     void toDto() {
 
 
-        assertNull(StatusTransactionMapper.toDto(null));
+        assertNull(TransactionStatusMapper.toDto(null));
 
-        StatusTransactionResponseDto.StatusEnum current = StatusTransactionMapper.toDto(TransactionInfo.StatusTransaction.FUTURE);
+        StatusTransactionResponseDto.StatusEnum current = TransactionStatusMapper.toDto(TransactionInfo.StatusTransaction.FUTURE);
         assertNotNull(current);
         assertEquals(StatusTransactionResponseDto.StatusEnum.FUTURE, current);
 
-        current = StatusTransactionMapper.toDto(TransactionInfo.StatusTransaction.INVALID);
+        current = TransactionStatusMapper.toDto(TransactionInfo.StatusTransaction.INVALID);
         assertNotNull(current);
         assertEquals(StatusTransactionResponseDto.StatusEnum.INVALID, current);
 
-        current = StatusTransactionMapper.toDto(TransactionInfo.StatusTransaction.SETTLED);
+        current = TransactionStatusMapper.toDto(TransactionInfo.StatusTransaction.SETTLED);
         assertNotNull(current);
         assertEquals(StatusTransactionResponseDto.StatusEnum.SETTLED, current);
 
-        current = StatusTransactionMapper.toDto(TransactionInfo.StatusTransaction.PENDING);
+        current = TransactionStatusMapper.toDto(TransactionInfo.StatusTransaction.PENDING);
         assertNotNull(current);
         assertEquals(StatusTransactionResponseDto.StatusEnum.PENDING, current);
 

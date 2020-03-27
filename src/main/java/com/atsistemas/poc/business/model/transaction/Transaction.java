@@ -1,15 +1,13 @@
 package com.atsistemas.poc.business.model.transaction;
 
-import com.atsistemas.poc.commons.util.IDGenerator;
+import com.atsistemas.poc.util.IDGenerator;
 import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 public class Transaction {
     private String referenceNumber;
     private String iban;

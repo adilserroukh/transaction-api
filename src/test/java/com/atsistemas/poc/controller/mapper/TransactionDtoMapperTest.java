@@ -1,4 +1,4 @@
-package com.atsistemas.poc.endPoints.mapper;
+package com.atsistemas.poc.controller.mapper;
 
 import com.atsistemas.generated.model.TransactionDto;
 import com.atsistemas.poc.business.model.transaction.Transaction;

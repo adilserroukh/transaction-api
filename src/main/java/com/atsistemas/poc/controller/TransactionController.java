@@ -1,4 +1,4 @@
-package com.atsistemas.poc.endPoints;
+package com.atsistemas.poc.controller;
 
 
 import com.atsistemas.generated.api.TransactionApi;
@@ -9,10 +9,12 @@ import com.atsistemas.poc.business.exceptions.account.AccountInsufficientBalance
 import com.atsistemas.poc.business.model.transaction.Transaction;
 import com.atsistemas.poc.business.model.transaction.TransactionInfo;
 import com.atsistemas.poc.business.model.transaction.TransactionRequest;
-import com.atsistemas.poc.business.ports.TransactionManager;
-import com.atsistemas.poc.endPoints.mapper.StatusTransactionMapper;
-import com.atsistemas.poc.endPoints.mapper.TransactionDtoMapper;
-import com.atsistemas.poc.endPoints.mapper.TransactionInfoDtoMapper;
+import com.atsistemas.poc.business.ports.CheckTransactionManager;
+import com.atsistemas.poc.business.ports.CreateTransactionManager;
+import com.atsistemas.poc.business.ports.SearchTransactionManager;
+import com.atsistemas.poc.controller.mapper.TransactionDtoMapper;
+import com.atsistemas.poc.controller.mapper.TransactionInfoDtoMapper;
+import com.atsistemas.poc.controller.mapper.TransactionStatusMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,10 +28,16 @@ import java.util.stream.Collectors;
 @RestController
 public class TransactionController implements TransactionApi {
 
-    private TransactionManager transactionManager;
+    private CreateTransactionManager createTransactionManager;
+    private CheckTransactionManager checkTransactionManager;
+    private SearchTransactionManager searchTransactionManager;
 
-    public TransactionController(TransactionManager transactionManager) {
-        this.transactionManager = transactionManager;
+    public TransactionController(CreateTransactionManager createTransactionManager,
+                                 CheckTransactionManager checkTransactionManager,
+                                 SearchTransactionManager searchTransactionManager) {
+        this.createTransactionManager = createTransactionManager;
+        this.checkTransactionManager = checkTransactionManager;
+        this.searchTransactionManager = searchTransactionManager;
     }
 
 
@@ -37,7 +45,7 @@ public class TransactionController implements TransactionApi {
     public ResponseEntity<StatusTransactionResponseDto> createTransaction(@Valid TransactionDto transactionDto) {
         try {
             Transaction transaction = TransactionDtoMapper.fromDto(transactionDto);
-            transactionManager.createTransaction(transaction);
+            createTransactionManager.create(transaction);
 
 
             StatusTransactionResponseDto status = new StatusTransactionResponseDto();
@@ -52,10 +60,9 @@ public class TransactionController implements TransactionApi {
     @Override
     public ResponseEntity<List<TransactionDto>> seachTransactions(String accountIban, @Valid String sort) {
 
-        List<Transaction> transactions = transactionManager.findTransactionsByIban(accountIban, true);
+        List<Transaction> transactions = searchTransactionManager.search(accountIban, true);
 
         List<TransactionDto> transactionsDto = new ArrayList<>();
-
         if (!transactions.isEmpty()) {
             transactionsDto = transactions.stream()
                     .map(TransactionDtoMapper::toDto)
@@ -70,11 +77,11 @@ public class TransactionController implements TransactionApi {
     public ResponseEntity<StatusTransactionResponseDto> statusTransation(@Valid TransationInfoRequestDto transationInfoRequestDto) {
         TransactionRequest request = TransactionInfoDtoMapper.fromRequestDto(transationInfoRequestDto);
 
-        TransactionInfo transactionInfo = transactionManager.statusTransaction(request);
+        TransactionInfo transactionInfo = checkTransactionManager.check(request);
 
         StatusTransactionResponseDto tra = new StatusTransactionResponseDto();
         tra.setReference(transactionInfo.getReferenceNumber());
-        tra.setStatus(StatusTransactionMapper.toDto(transactionInfo.getStatus()));
+        tra.setStatus(TransactionStatusMapper.toDto(transactionInfo.getStatus()));
         tra.setAmount(transactionInfo.getAmount());
         tra.setFee(transactionInfo.getFee());
         return ResponseEntity.ok().body(tra);
