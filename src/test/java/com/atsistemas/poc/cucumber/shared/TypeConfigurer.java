@@ -1,5 +1,6 @@
 package com.atsistemas.poc.cucumber.shared;
 
+import com.atsistemas.generated.model.TransactionDto;
 import com.atsistemas.poc.business.model.account.Account;
 import com.atsistemas.poc.business.model.transaction.Transaction;
 import com.atsistemas.poc.persistence.model.TransactionData;
@@ -24,9 +25,19 @@ public class TypeConfigurer implements TypeRegistryConfigurer {
         registry.defineDataTableType(new DataTableType(Transaction.class, (TableEntryTransformer<Transaction>) entry -> {
             Transaction.Builder builder = Transaction.builder();
             builder.iban(entry.get("iban"))
-                    .amount(new BigDecimal(entry.get("amount")));
-            ;
+                    .amount(new BigDecimal(entry.get("amount")))
+                    .fee(new BigDecimal(entry.get("fee")))
+                    .referenceNumber(entry.get("reference"));
             return builder.create();
+        }));
+
+        registry.defineDataTableType(new DataTableType(TransactionDto.class, (TableEntryTransformer<TransactionDto>) entry -> {
+            TransactionDto dto = new TransactionDto();
+            dto.iban(entry.get("iban"));
+            dto.amount(new BigDecimal(entry.get("amount")));
+            dto.fee(new BigDecimal(entry.get("fee")));
+            dto.reference(entry.get("reference"));
+           return dto;
         }));
 
 
@@ -34,6 +45,7 @@ public class TypeConfigurer implements TypeRegistryConfigurer {
             TransactionData transactionData = new TransactionData();
             transactionData.setAccountIban(entry.get("iban"));
             transactionData.setAmount(new BigDecimal(entry.get("amount")));
+            transactionData.setFee(new BigDecimal(entry.get("fee")));
             return transactionData;
         }));
 

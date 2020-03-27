@@ -5,7 +5,7 @@ import io.cucumber.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features/BusinessRules.feature"
+@CucumberOptions(features = "src/test/resources/features/businessRules"
         , plugin = {"pretty", "html:target/cucumber"}
         , extraGlue = "com.atsistemas.poc.cucumber.shared"
 )

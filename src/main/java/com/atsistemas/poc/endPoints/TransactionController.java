@@ -7,8 +7,10 @@ import com.atsistemas.generated.model.TransactionDto;
 import com.atsistemas.generated.model.TransationInfoRequestDto;
 import com.atsistemas.poc.business.exceptions.account.AccountInsufficientBalanceException;
 import com.atsistemas.poc.business.model.transaction.Transaction;
+import com.atsistemas.poc.business.model.transaction.TransactionInfo;
 import com.atsistemas.poc.business.model.transaction.TransactionRequest;
 import com.atsistemas.poc.business.ports.TransactionManager;
+import com.atsistemas.poc.endPoints.mapper.StatusTransactionMapper;
 import com.atsistemas.poc.endPoints.mapper.TransactionDtoMapper;
 import com.atsistemas.poc.endPoints.mapper.TransactionInfoDtoMapper;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,7 @@ public class TransactionController implements TransactionApi {
         try {
             Transaction transaction = TransactionDtoMapper.fromDto(transactionDto);
             transactionManager.createTransaction(transaction);
+
 
             StatusTransactionResponseDto status = new StatusTransactionResponseDto();
             status.setStatus(StatusTransactionResponseDto.StatusEnum.PENDING);
@@ -66,11 +69,15 @@ public class TransactionController implements TransactionApi {
     @Override
     public ResponseEntity<StatusTransactionResponseDto> statusTransation(@Valid TransationInfoRequestDto transationInfoRequestDto) {
         TransactionRequest request = TransactionInfoDtoMapper.fromRequestDto(transationInfoRequestDto);
-        transactionManager.statusTransaction(request, null);
+
+        TransactionInfo transactionInfo = transactionManager.statusTransaction(request);
 
         StatusTransactionResponseDto tra = new StatusTransactionResponseDto();
-        tra.setStatus(StatusTransactionResponseDto.StatusEnum.INVALID);
-        return ResponseEntity.ok(tra);
+        tra.setReference(transactionInfo.getReferenceNumber());
+        tra.setStatus(StatusTransactionMapper.toDto(transactionInfo.getStatus()));
+        tra.setAmount(transactionInfo.getAmount());
+        tra.setFee(transactionInfo.getFee());
+        return ResponseEntity.ok().body(tra);
     }
 
 

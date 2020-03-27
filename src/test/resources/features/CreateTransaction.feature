@@ -1,31 +1,44 @@
 Feature: Create transaction
 
   Background:
-    Given delete Account 'ES9820385778983000760236'
+    Given delete all Accounts
 
-  Scenario: Create Transaction And verify in Data Base
+  Scenario: Users send credit
     Given create account user
       | iban                     | amount |
       | ES9820385778983000760236 | 200    |
     When receive the transaction
-      | iban                     | amount |
-      | ES9820385778983000760236 | 50     |
+      | iban                     | amount | fee |
+      | ES9820385778983000760236 | 50     | 0   |
     Then account user
       | IBAN_NUMER               | AMOUNT |
-      | ES9820385778983000760236 | 150.00 |
+      | ES9820385778983000760236 | 250.00 |
 
 
-
-  Scenario: Create Transaction And verify in Data Base
+  Scenario: Users send debit
     Given create account user
       | iban                     | amount |
       | ES9820385778983000760236 | 200    |
     When receive the transaction
-      | iban                     | amount |
-      | ES9820385778983000760236 | -80     |
+      | iban                     | amount | fee |
+      | ES9820385778983000760236 | -80    | 0   |
     Then account user
       | IBAN_NUMER               | AMOUNT |
-      | ES9820385778983000760236 | 280.00 |
+      | ES9820385778983000760236 | 120.00 |
+
+
+  Scenario: Users send 3 transactions
+    Given create account user
+      | iban                     | amount |
+      | ES9820385778983000760236 | 200    |
+    When receive the transaction
+      | iban                     | amount | fee |
+      | ES9820385778983000760236 | 50     | 1   |
+      | ES9820385778983000760236 | 20     | 1   |
+      | ES9820385778983000760236 | -30    | 0   |
+    Then account user
+      | IBAN_NUMER               | AMOUNT |
+      | ES9820385778983000760236 | 238.00 |
 
 
 

@@ -120,7 +120,7 @@ class TransactionDtoMapperTest {
         assertNotNull(to.getReferenceNumber());
         assertNotNull(to.getIban());
         assertEquals("ES9820385778983000760236", to.getIban());
-        assertNull(to.getTransactionDate());
+        assertNotNull(to.getTransactionDate());
         assertNull(to.getAmount());
         assertNull(to.getFee());
         assertNull(to.getDescription());
@@ -137,7 +137,7 @@ class TransactionDtoMapperTest {
         Transaction to = TransactionDtoMapper.fromDto(from);
         assertEquals("12345A", to.getReferenceNumber());
         assertNull(to.getIban());
-        assertNull(to.getTransactionDate());
+        assertNotNull(to.getTransactionDate());
         assertNull(to.getAmount());
         assertNull(to.getFee());
         assertNull(to.getDescription());
@@ -169,7 +169,7 @@ class TransactionDtoMapperTest {
 
         assertNotNull(to.getReferenceNumber());
         assertNull(to.getIban());
-        assertNull(to.getTransactionDate());
+        assertNotNull(to.getTransactionDate());
         assertNotNull(to.getAmount());
         assertEquals(BigDecimal.ONE, to.getAmount());
         assertNull(to.getFee());
@@ -185,7 +185,7 @@ class TransactionDtoMapperTest {
 
         assertNotNull(to.getReferenceNumber());
         assertNull(to.getIban());
-        assertNull(to.getTransactionDate());
+        assertNotNull(to.getTransactionDate());
         assertNull(to.getAmount());
         assertEquals(BigDecimal.ONE, to.getFee());
         assertNull(to.getDescription());
@@ -200,7 +200,7 @@ class TransactionDtoMapperTest {
 
         assertNotNull(to.getReferenceNumber());
         assertNull(to.getIban());
-        assertNull(to.getTransactionDate());
+        assertNotNull(to.getTransactionDate());
         assertNull(to.getAmount());
         assertNull(to.getFee());
         assertEquals("Restaurant paymen", to.getDescription());

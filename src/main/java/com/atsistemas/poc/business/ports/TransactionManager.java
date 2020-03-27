@@ -46,7 +46,7 @@ public class TransactionManager {
             BigDecimal feeTrans = Optional.ofNullable(transaction.getFee()).orElse(BigDecimal.ZERO);
 
             BigDecimal totalAmount = accout.get().getAmount()
-                    .subtract(amountTrans)
+                    .add(amountTrans)
                     .subtract(feeTrans);
 
             if (totalAmount.compareTo(BigDecimal.ZERO) < 0) {
@@ -55,15 +55,20 @@ public class TransactionManager {
             }
 
 
-            // TransactionData transactionData = TransactionMapper.INSTANCE.fromTransaction(transaction);
             TransactionData transactionData = new TransactionData();
-            transactionData.setAmount(transaction.getAmount());
+            transactionData.setReferenceNumber(transaction.getReferenceNumber());
             transactionData.setAccountIban(transaction.getIban());
+            transactionData.setDateTook(transaction.getTransactionDate());
+            transactionData.setAmount(transaction.getAmount());
+            transactionData.setFee(transaction.getFee());
+            transactionData.setDescription(transaction.getDescription());
+
+
+            transactionService.create(transactionData);
 
             accout.get().setAmount(totalAmount);
             accountService.create(accout.get());
 
-            transactionService.create(transactionData);
             return transaction;
 
         } else {
@@ -89,38 +94,61 @@ public class TransactionManager {
         return transactions;
     }
 
+    public TransactionInfo statusTransaction(TransactionRequest request) {
+        Optional<TransactionData> transactionData = transactionService.findByReference(request.getReferenceNumber());
+        return this.statusTransaction(request, transactionData.isPresent() ? transactionData.get() : null);
+    }
 
-    public TransactionInfo statusTransaction(TransactionRequest request, Transaction transaction) {
-        //Request is Null or Empty
-        if (request == null || StringUtils.isEmpty(request.getReferenceNumber())) {
-            return null;
-        }
 
+    public TransactionInfo statusTransaction(TransactionRequest request, TransactionData transaction) {
         TransactionInfo.Builder builder = TransactionInfo.builder();
         builder.referenceNumber(request.getReferenceNumber());
+        //Request is Null or Empty
+        if (request != null && !StringUtils.isEmpty(request.getReferenceNumber())) {
 
-        if (transaction == null) {
-            builder.status(TransactionInfo.StatusTransaction.INVALID);
-        } else {
 
-            LocalDateTime transDate = transaction.getTransactionDate().truncatedTo(DAYS);
-            LocalDateTime currentDate = LocalDateTime.now().truncatedTo(DAYS);
-
-            if (transDate.isEqual(currentDate)) {
-                if (TransactionRequest.TypeChannel.INTERNAL.equals(request.getTypeChannel())) {
-                    builder.fee(transaction.getFee());
-                }
-
-                builder.status(TransactionInfo.StatusTransaction.PENDING);
-                builder.amount(transaction.getAmount());
-
+            if (transaction == null) {
+                builder.status(TransactionInfo.StatusTransaction.INVALID);
             } else {
-                if (TransactionRequest.TypeChannel.INTERNAL.equals(request.getTypeChannel())) {
-                    builder.fee(transaction.getFee());
-                }
 
-                builder.status(TransactionInfo.StatusTransaction.SETTLED);
-                builder.amount(transaction.getAmount());
+                LocalDateTime transDate = transaction.getDateTook().truncatedTo(DAYS);
+                LocalDateTime currentDate = LocalDateTime.now().truncatedTo(DAYS);
+
+                if (transDate.isEqual(currentDate)) {
+                    if (TransactionRequest.TypeChannel.INTERNAL.equals(request.getTypeChannel())) {
+                        builder.fee(transaction.getFee());
+                        builder.status(TransactionInfo.StatusTransaction.PENDING);
+                        builder.amount(transaction.getAmount());
+
+                    } else {
+                        builder.status(TransactionInfo.StatusTransaction.PENDING);
+                        builder.amount(transaction.getAmount().subtract(transaction.getFee()));
+                    }
+
+
+                } else {
+                    if (transDate.isBefore(currentDate)) {
+
+                        if (TransactionRequest.TypeChannel.INTERNAL.equals(request.getTypeChannel())) {
+                            builder.fee(transaction.getFee());
+                            builder.amount(transaction.getAmount());
+                            builder.status(TransactionInfo.StatusTransaction.SETTLED);
+
+                        } else {
+                            builder.amount(transaction.getAmount().subtract(transaction.getFee()));
+                            builder.status(TransactionInfo.StatusTransaction.SETTLED);
+                        }
+
+
+                    } else {
+                        if (TransactionRequest.TypeChannel.INTERNAL.equals(request.getTypeChannel())) {
+                            builder.fee(transaction.getFee());
+                            builder.amount(transaction.getAmount());
+                            builder.status(TransactionInfo.StatusTransaction.FUTURE);
+
+                        }
+                    }
+                }
             }
         }
         return builder.create();

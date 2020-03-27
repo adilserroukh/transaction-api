@@ -1,12 +1,13 @@
 package com.atsistemas.poc.cucumber.transaction;
 
 
+import com.atsistemas.generated.model.TransactionDto;
 import com.atsistemas.poc.business.model.account.Account;
-import com.atsistemas.poc.business.model.transaction.Transaction;
 import com.atsistemas.poc.cucumber.Step;
+import com.atsistemas.poc.cucumber.util.LocalDateTimeDeserializer;
 import com.atsistemas.poc.persistence.model.AccountData;
+import com.atsistemas.poc.persistence.model.TransactionData;
 import com.atsistemas.poc.persistence.service.AccountService;
-import com.atsistemas.poc.persistence.service.TransactionService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ninja_squad.dbsetup.DbSetup;
@@ -28,6 +29,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +44,6 @@ public class CreateTransactionsStepTests implements En {
     @Autowired
     private DataSource dataSource;
 
-    @Autowired
-    private TransactionService transactionService;
 
     @Autowired
     private AccountService accountService;
@@ -51,17 +51,21 @@ public class CreateTransactionsStepTests implements En {
     @LocalServerPort
     private int port;
 
-    private ValidatableResponse response;
     private RequestSpecification api;
+    private ValidatableResponse response;
 
-    private static final int TEST_PORT = 8080;
+
     private static final String APPLICATION_JSON_CONTENT_TYPE = "application/json";
     private static final String APPLICATIONS_WS_ROOT = "/transaction/receive";
 
 
     public CreateTransactionsStepTests() {
-        Given("delete Account {string}", (String string) -> {
-            deleteAll("account");
+        Given("delete all Accounts", () -> {
+            deleteAll("ACCOUNT");
+        });
+
+        Given("delete all Transactions", () -> {
+            deleteAll("TRANSACTION");
         });
 
         Given("create account user", (DataTable dataTable) -> {
@@ -78,20 +82,17 @@ public class CreateTransactionsStepTests implements En {
         });
 
         When("receive the transaction", (DataTable dataTable) -> {
-            List<Transaction> transactions = dataTable.asList(Transaction.class);
+            List<TransactionDto> transactions = dataTable.asList(TransactionDto.class);
 
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.serializeNulls();
             Gson gson = gsonBuilder.create();
 
-            //  mvc.perform(post("/transaction").content(new Gson().toJson(transactions.get(0)))
-            //          .contentType(MediaType.APPLICATION_JSON))
-            //          .andExpect(status().isCreated());
             transactions.stream()
                     .forEach(tra -> {
                         response = api
                                 .contentType(APPLICATION_JSON_CONTENT_TYPE)
-                                .body("{\"date\":\"2019-07-16T16:55:42.000Z\",\"fee\":0,\"iban\":\"ES9820385778983000760236\",\"reference\":\"\",\"amount\":"+tra.getAmount()+",\"description\":\"\"}")
+                                .body("{\"date\":\"2019-07-16T16:55:42.000\",\"fee\":" + tra.getFee() + ",\"iban\":\"ES9820385778983000760236\",\"reference\":\"\",\"amount\":" + tra.getAmount() + ",\"description\":\"\"}")
                                 .when()
                                 .post(APPLICATIONS_WS_ROOT)
                                 .then();
@@ -114,6 +115,18 @@ public class CreateTransactionsStepTests implements En {
 
 
             assertThat(expecteds).containsExactlyElementsOf(currents);
+        });
+
+        Then("the JSON response should have:", (String docString) -> {
+
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.serializeNulls();
+            gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer());
+            Gson gson = gsonBuilder.create();
+
+            TransactionData response = gson.fromJson(docString, TransactionData.class);
+
+
         });
 
     }
@@ -181,4 +194,5 @@ public class CreateTransactionsStepTests implements En {
         api = given().port(port)
                 .basePath("/api");
     }
+
 }

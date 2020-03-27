@@ -22,7 +22,8 @@ public class Transaction {
         CREDIT,
         DEBIT
     }
-    private Transaction(){
+
+    private Transaction() {
 
     }
 
@@ -42,9 +43,9 @@ public class Transaction {
         }
 
         public Builder referenceNumber(String referenceNumber) {
-            if(!StringUtils.isBlank(referenceNumber)){
+            if (!StringUtils.isBlank(referenceNumber)) {
                 transaction.referenceNumber = referenceNumber;
-            }else{
+            } else {
                 transaction.referenceNumber = IDGenerator.generateEntityId();
             }
             return this;
@@ -56,7 +57,11 @@ public class Transaction {
         }
 
         public Builder transactionDate(LocalDateTime transactionDate) {
-            transaction.transactionDate = transactionDate;
+            if (transactionDate == null) {
+                transaction.transactionDate = LocalDateTime.now();
+            } else {
+                transaction.transactionDate = transactionDate;
+            }
             return this;
         }
 

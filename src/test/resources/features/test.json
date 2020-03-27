@@ -1,0 +1,8 @@
+{
+  "reference": "12345A"
+  "account_iban": "ES9820385778983000760236",
+  "date": "2019-07-16T16:55:42.000Z",
+  "amount": 193.38,
+  "fee": 3.18,
+  "description": "Restaurant payment"
+}

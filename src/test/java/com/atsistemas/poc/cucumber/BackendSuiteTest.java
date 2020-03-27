@@ -7,7 +7,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        CreateTransactionsRunnerTests.class,
+        //CreateTransactionsRunnerTests.class,
         BusinessRulesRunnerTests.class
 })
 public class BackendSuiteTest {

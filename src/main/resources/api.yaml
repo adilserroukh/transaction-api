@@ -87,12 +87,8 @@ components:
     Transaction:
       type: "object"
       required:
-        - "reference"
         - "iban"
-        - "date"
         - "amount"
-        - "fee"
-        - "description"
       properties:
         reference:
           type: "string"
@@ -104,7 +100,6 @@ components:
         date:
           type: "string"
           format: date-time
-          nullable: true
           example: "2019-07-16T16:55:42.000Z"
 
         amount:
@@ -112,15 +107,16 @@ components:
           example: "193.38"
         fee:
           type: "number"
-          nullable: true
+          multipleOf: 0.01
           example: "3.18"
         description:
           type: "string"
-          nullable: true
           example: "Restaurant payment"
 
     TransationInfoRequest:
       type: object
+      required:
+        - "reference"
       properties:
         reference:
           type: string
