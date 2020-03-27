@@ -6,9 +6,7 @@ Exemple APIs
 
 #### Architecture cannot be fixed from the beginning because there may be changes that will make us change it, but the most important thing is to have a struture that is the base (It is the main function of an architect or tech leader ).
 
-#### You can make much more beautiful what I have put but this takes time.
-
-#### I have created a single model because I wanted you to see can be separated into different projects with different layers: persistence, businnes, backend , delivry ..
+#### I have created a single project but it is possible to separate it into different layers (persistence, businese, backend , delivry ..)
 
 #### I have not mocketed services with cucmber, this has taken me a while to think the logic.
 
@@ -50,14 +48,15 @@ Run Appli
 
 ![run_appli](run_appli.png)
     
+
+
+**Started Test (Cucumber)**
+--
+I have done unit tests and ATDD  of business logic.
+
 Run Test
 
 ![run_test](run_test.png)
 
-**Started Test (Cucumber)**
---
-I have used cucumber to make ATDD. The objective is to show you my way of thinking to do this type of test.
 
-I have only done one test but the rest of the tests would be to apply the same logic.
-
-The cucumber test results are saved in target\cucumber, these results could be better if you had added **Senerity**.
+Cucumber test results are found in target \ cucumber
